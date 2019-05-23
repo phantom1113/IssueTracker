@@ -1,2 +1,0 @@
-# IssueTracker
-Created with CodeSandbox
