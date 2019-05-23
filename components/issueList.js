@@ -11,38 +11,50 @@ class IssueList extends React.Component {
     this.state = { issues: [] };
     this.createIssue = this.createIssue.bind(this);
     this.setFilter = this.setFilter.bind(this);
+    this.initFilter = this.initFilter.bind(this);
   }
   componentDidMount() {
     this.props.history.push({
       pathname: this.props.location.pathname,
-      query: { status: "" }
+      query: { status: "", effort_gte: "", effort_lte: "" }
     });
-    console.log(this.props);
     this.loadData();
   }
   componentDidUpdate(prevProps) {
     const oldQuery = queryString.parse(prevProps.location.search);
     const newQuery = queryString.parse(this.props.location.search);
-    if (oldQuery.status === newQuery.status) {
+    if (
+      oldQuery.status === newQuery.status &&
+      oldQuery.effort_gte === newQuery.effort_gte &&
+      oldQuery.effort_lte === newQuery.effort_lte
+    ) {
       return;
     }
     this.loadData();
   }
+  initFilter() {
+    if (this.props.history.query === undefined)
+      return { status: "", effort_gte: "", effort_lte: "" };
+    return this.props.history.query;
+  }
   //history.location.query.status
   setFilter(query) {
-    console.log(this.props);
     this.props.history.push({ pathname: this.props.location.pathname, query });
     this.loadData();
   }
   loadData() {
-    //const { status } = queryString.parse(this.props.location.search);
-    const { status } = this.props.history.location.query;
-    //console.log(temp.status);
+    const {
+      status,
+      effort_gte,
+      effort_lte
+    } = this.props.history.location.query;
     console.log(this.props.history.location.query);
     axios
       .get("https://3ojz0xmpq.sse.codesandbox.io/api/issues", {
         params: {
-          status: status
+          status: status,
+          effort_gte: effort_gte,
+          effort_lte: effort_lte
         }
       })
       .then(res => {
@@ -53,7 +65,6 @@ class IssueList extends React.Component {
             issue.completionDate = new Date(issue.completionDate);
         });
         this.setState({ issues: res.data.records });
-        //console.log(this.state.products);
       })
       .catch(function(error) {
         // handle error
@@ -83,7 +94,7 @@ class IssueList extends React.Component {
   render() {
     return (
       <div>
-        <IssueFilter setFilter={this.setFilter} />
+        <IssueFilter setFilter={this.setFilter} initFilter={this.initFilter} />
         <hr />
         <IssueTable issues={this.state.issues} />
         <hr />
