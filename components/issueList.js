@@ -48,7 +48,6 @@ class IssueList extends React.Component {
       effort_gte,
       effort_lte
     } = this.props.history.location.query;
-    console.log(this.props.history.location.query);
     axios
       .get("https://3ojz0xmpq.sse.codesandbox.io/api/issues", {
         params: {
@@ -94,7 +93,10 @@ class IssueList extends React.Component {
   render() {
     return (
       <div>
-        <IssueFilter setFilter={this.setFilter} initFilter={this.initFilter} />
+        <IssueFilter
+          setFilter={this.setFilter}
+          initFilter={this.initFilter()}
+        />
         <hr />
         <IssueTable issues={this.state.issues} />
         <hr />

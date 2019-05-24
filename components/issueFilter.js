@@ -22,25 +22,39 @@ export default class IssueFilter extends React.Component {
       status: newProps.initFilter.status || "",
       effort_gte: newProps.initFilter.effort_gte || "",
       effort_lte: newProps.initFilter.effort_lte || "",
-      changed: false
+      changed: false,
+      changed_Gte: false,
+      changed_Lte: false
     });
   }
 
   onChangeStatus(e) {
-    this.setState({ status: e.target.value, changed: true });
+    const status = e.target.value;
+    if (status !== "") {
+      this.setState({ status: e.target.value, changed: true });
+    }
+    if (status === "") {
+      this.setState({ changed: false });
+    }
   }
 
   onChangeEffortGte(e) {
     const effortString = e.target.value;
     if (effortString.match(/^\d*$/)) {
-      this.setState({ effort_gte: e.target.value, changed: true });
+      this.setState({ effort_gte: e.target.value, changed_Gte: true });
+    }
+    if (effortString === "") {
+      this.setState({ changed_Gte: false });
     }
   }
 
   onChangeEffortLte(e) {
     const effortString = e.target.value;
     if (effortString.match(/^\d*$/)) {
-      this.setState({ effort_lte: e.target.value, changed: true });
+      this.setState({ effort_lte: e.target.value, changed_Lte: true });
+    }
+    if (effortString === "") {
+      this.setState({ changed_Lte: false });
     }
   }
 
@@ -91,7 +105,16 @@ export default class IssueFilter extends React.Component {
           onChange={this.onChangeEffortLte}
         />
         <button onClick={this.applyFilter}>Apply</button>
-        <button onClick={this.resetFilter} disabled={!this.state.changed}>
+        <button
+          onClick={this.resetFilter}
+          disabled={
+            !(
+              this.state.changed_Lte ||
+              this.state.changed_Gte ||
+              this.state.changed
+            )
+          }
+        >
           Reset
         </button>
         <button onClick={this.clearFilter}>Clear</button>
