@@ -10,6 +10,12 @@ td {
 table.bordered-table {
   border-collapse: collapse;
 }
+input.invalid {
+  border-color: red;
+}
+div.error {
+  color: red;
+}
 .header {
   border-bottom: 1px solid silver;
   margin-bottom: 20px;
