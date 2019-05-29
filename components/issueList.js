@@ -12,6 +12,7 @@ class IssueList extends React.Component {
     this.createIssue = this.createIssue.bind(this);
     this.setFilter = this.setFilter.bind(this);
     this.initFilter = this.initFilter.bind(this);
+    this.deleteIssue = this.deleteIssue.bind(this);
   }
   componentDidMount() {
     this.props.history.push({
@@ -90,6 +91,17 @@ class IssueList extends React.Component {
         alert(err.response.data.message);
       });
   }
+  deleteIssue(id) {
+    axios
+      .delete("https://3ojz0xmpq.sse.codesandbox.io/api/issues/" + id)
+      .then(res => {
+        this.loadData();
+        console.log("Success");
+      })
+      .catch(err => {
+        console.log("Failed to delete issue");
+      });
+  }
   render() {
     return (
       <div>
@@ -98,7 +110,7 @@ class IssueList extends React.Component {
           initFilter={this.initFilter()}
         />
         <hr />
-        <IssueTable issues={this.state.issues} />
+        <IssueTable issues={this.state.issues} deleteIssue={this.deleteIssue} />
         <hr />
         <IssueAdd createIssue={this.createIssue} />
       </div>

@@ -4,7 +4,11 @@ import IssueRow from "./issueRow";
 class issueTable extends React.Component {
   render() {
     const issueRows = this.props.issues.map(issue => (
-      <IssueRow key={issue._id} issue={issue} />
+      <IssueRow
+        key={issue._id}
+        issue={issue}
+        deleteIssue={this.props.deleteIssue}
+      />
     ));
     return (
       <table className="bordered-table">
@@ -18,6 +22,7 @@ class issueTable extends React.Component {
             <th>Effort</th>
             <th>Completion Date</th>
             <th>Title</th>
+            <th />
           </tr>
         </thead>
         <tbody>{issueRows}</tbody>
