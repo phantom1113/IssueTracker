@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Button } from "reactstrap";
 
 class IssueRow extends React.Component {
   constructor() {
@@ -26,7 +27,9 @@ class IssueRow extends React.Component {
         </td>
         <td>{issue.title}</td>
         <td>
-          <button onClick={this.onDeleteClick}>Delete</button>
+          <Button color="danger" onClick={this.onDeleteClick}>
+            Delete
+          </Button>
         </td>
       </tr>
     );

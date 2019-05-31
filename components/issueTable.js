@@ -11,7 +11,7 @@ class issueTable extends React.Component {
       />
     ));
     return (
-      <table className="bordered-table">
+      <table striped className="bordered-table ">
         <thead>
           <tr>
             <th>Edit Id</th>
