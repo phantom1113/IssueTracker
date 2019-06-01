@@ -1,4 +1,15 @@
 import React from "react";
+import {
+  Row,
+  Col,
+  Button,
+  ButtonToolbar,
+  Input,
+  InputGroup,
+  InputGroupAddon,
+  Label,
+  FormGroup
+} from "reactstrap";
 
 export default class IssueFilter extends React.Component {
   constructor(props) {
@@ -81,44 +92,77 @@ export default class IssueFilter extends React.Component {
 
   render() {
     return (
-      <div>
-        Status:
-        <select value={this.state.status} onChange={this.onChangeStatus}>
-          <option value="">(Any)</option>
-          <option value="New">New</option>
-          <option value="Open">Open</option>
-          <option value="Assigned">Assigned</option>
-          <option value="Fixed">Fixed</option>
-          <option value="Verified">Verified</option>
-          <option value="Closed">Closed</option>
-        </select>
-        &nbsp;Effort between:
-        <input
-          size={5}
-          value={this.state.effort_gte}
-          onChange={this.onChangeEffortGte}
-        />
-        &nbsp;-&nbsp;
-        <input
-          size={5}
-          value={this.state.effort_lte}
-          onChange={this.onChangeEffortLte}
-        />
-        <button onClick={this.applyFilter}>Apply</button>
-        <button
-          onClick={this.resetFilter}
-          disabled={
-            !(
-              this.state.changed_Lte ||
-              this.state.changed_Gte ||
-              this.state.changed
-            )
-          }
-        >
-          Reset
-        </button>
-        <button onClick={this.clearFilter}>Clear</button>
-      </div>
+      <Row className="m-1">
+        <Col xs={6} sm={4}>
+          <FormGroup>
+            <Label>Status</Label>
+            <Input
+              type="select"
+              name="select"
+              id="exampleSelect"
+              value={this.state.status}
+              onChange={this.onChangeStatus}
+            >
+              <option value="">(Any)</option>
+              <option value="New">New</option>
+              <option value="Open">Open</option>
+              <option value="Assigned">Assigned</option>
+              <option value="Fixed">Fixed</option>
+              <option value="Verified">Verified</option>
+              <option value="Closed">Closed</option>
+            </Input>
+          </FormGroup>
+        </Col>
+        <Col xs={6} sm={4}>
+          <FormGroup>
+            <Label>Effort between</Label>
+            <InputGroup>
+              <Input
+                size={5}
+                value={this.state.effort_gte}
+                onChange={this.onChangeEffortGte}
+              />
+              <InputGroupAddon addonType="prepend">-</InputGroupAddon>
+              <Input
+                size={5}
+                value={this.state.effort_lte}
+                onChange={this.onChangeEffortLte}
+              />
+            </InputGroup>
+          </FormGroup>
+        </Col>
+        <Col xs={12} sm={4}>
+          <FormGroup>
+            <Label>&nbsp;</Label>
+            <ButtonToolbar>
+              <Button
+                className="mr-1"
+                color="primary"
+                onClick={this.applyFilter}
+              >
+                Apply
+              </Button>{" "}
+              <Button
+                className="mr-1"
+                color="primary"
+                onClick={this.resetFilter}
+                disabled={
+                  !(
+                    this.state.changed_Lte ||
+                    this.state.changed_Gte ||
+                    this.state.changed
+                  )
+                }
+              >
+                Reset
+              </Button>{" "}
+              <Button color="primary" onClick={this.clearFilter}>
+                Clear
+              </Button>{" "}
+            </ButtonToolbar>
+          </FormGroup>
+        </Col>
+      </Row>
     );
   }
 }

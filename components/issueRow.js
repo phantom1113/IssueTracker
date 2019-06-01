@@ -17,7 +17,6 @@ class IssueRow extends React.Component {
         <td>
           <Link to={`/issues/${issue._id}`}>{issue._id.substr(-4)}</Link>
         </td>
-        <td>{issue._id}</td>
         <td>{issue.status}</td>
         <td>{issue.owner}</td>
         <td>{issue.created.toDateString()}</td>

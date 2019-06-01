@@ -1,5 +1,6 @@
 import React from "react";
 import IssueRow from "./issueRow";
+import { Table } from "reactstrap";
 
 class issueTable extends React.Component {
   render() {
@@ -11,10 +12,9 @@ class issueTable extends React.Component {
       />
     ));
     return (
-      <table striped className="bordered-table ">
+      <Table bordered condensed hover responsive>
         <thead>
           <tr>
-            <th>Edit Id</th>
             <th>Id</th>
             <th>Status</th>
             <th>Owner</th>
@@ -26,7 +26,7 @@ class issueTable extends React.Component {
           </tr>
         </thead>
         <tbody>{issueRows}</tbody>
-      </table>
+      </Table>
     );
   }
 }

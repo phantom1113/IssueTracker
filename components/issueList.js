@@ -3,16 +3,21 @@ import queryString from "query-string";
 import IssueAdd from "./issueAdd";
 import IssueTable from "./issueTable";
 import IssueFilter from "./issueFilter";
+import { Card, CardHeader, Collapse } from "reactstrap";
 import axios from "axios";
 
 class IssueList extends React.Component {
   constructor() {
     super();
-    this.state = { issues: [] };
+    this.state = { issues: [], collapse: false, status: "Closed" };
     this.createIssue = this.createIssue.bind(this);
     this.setFilter = this.setFilter.bind(this);
     this.initFilter = this.initFilter.bind(this);
     this.deleteIssue = this.deleteIssue.bind(this);
+    this.toggle = this.toggle.bind(this);
+  }
+  toggle() {
+    this.setState(state => ({ collapse: !state.collapse }));
   }
   componentDidMount() {
     this.props.history.push({
@@ -105,10 +110,15 @@ class IssueList extends React.Component {
   render() {
     return (
       <div>
-        <IssueFilter
-          setFilter={this.setFilter}
-          initFilter={this.initFilter()}
-        />
+        <Card>
+          <CardHeader onClick={this.toggle}>Filter</CardHeader>
+          <Collapse isOpen={this.state.collapse}>
+            <IssueFilter
+              setFilter={this.setFilter}
+              initFilter={this.initFilter()}
+            />
+          </Collapse>
+        </Card>
         <hr />
         <IssueTable issues={this.state.issues} deleteIssue={this.deleteIssue} />
         <hr />
