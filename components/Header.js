@@ -33,7 +33,7 @@ export default class Header extends React.Component {
       <div>
         <Navbar color="light" light expand="md">
           <NavbarBrand tag={Link} to="/">
-            Tracker Issues
+            Issue Tracker
           </NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
