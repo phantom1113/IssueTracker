@@ -1,4 +1,5 @@
 import React from "react";
+import { Input } from "reactstrap";
 export default class NumInput extends React.Component {
   constructor(props) {
     super(props);
@@ -27,7 +28,7 @@ export default class NumInput extends React.Component {
   }
   render() {
     return (
-      <input
+      <Input
         type="text"
         {...this.props}
         value={this.state.value}

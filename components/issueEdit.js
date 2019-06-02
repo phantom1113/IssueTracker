@@ -3,6 +3,19 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import NumInput from "./NumInput";
 import DateInput from "./DateInput";
+import {
+  FormGroup,
+  Input,
+  Label,
+  Button,
+  ButtonToolbar,
+  Card,
+  Form,
+  Col,
+  CardHeader,
+  FormFeedback
+} from "reactstrap";
+import { LinkContainer } from "react-router-bootstrap";
 
 export default class IssueEdit extends React.Component {
   constructor() {
@@ -50,7 +63,6 @@ export default class IssueEdit extends React.Component {
     console.log(issue);
   }
   onSubmit(event) {
-    console.log("run onsubmit function");
     event.preventDefault();
     if (Object.keys(this.state.invalidFields).length !== 0) {
       return;
@@ -76,7 +88,6 @@ export default class IssueEdit extends React.Component {
       });
   }
   loadData() {
-    console.log("Render function");
     axios
       .get(
         "https://3ojz0xmpq.sse.codesandbox.io/api/issues/" +
@@ -105,55 +116,122 @@ export default class IssueEdit extends React.Component {
           Please correct invalid fields before submitting.
         </div>
       );
+    console.log(this.state.invalidFields);
     return (
-      <div>
-        <form onSubmit={this.onSubmit}>
-          ID: {issue._id}
-          <br />
-          Created: {issue.created ? issue.created.toDateString() : ""}
-          <br />
-          Status:{" "}
-          <select name="status" value={issue.status} onChange={this.onChange}>
-            <option value="New">New</option>
-            <option value="Open">Open</option>
-            <option value="Assigned">Assigned</option>
-            <option value="Fixed">Fixed</option>
-            <option value="Verified">Verified</option>
-            <option value="Closed">Closed</option>
-          </select>
-          <br />
-          Owner:{" "}
-          <input name="owner" value={issue.owner} onChange={this.onChange} />
-          <br />
-          Effort:{" "}
-          <NumInput
-            size={5}
-            name="effort"
-            value={issue.effort}
-            onChange={this.onChange}
-          />
-          <br />
-          Completion Date:{" "}
-          <DateInput
-            name="completionDate"
-            value={issue.completionDate}
-            onChange={this.onChange}
-            onValidityChange={this.onValidityChange}
-          />
-          <br />
-          Title:{" "}
-          <input
-            name="title"
-            size={50}
-            value={issue.title}
-            onChange={this.onChange}
-          />
-          <br />
-          {validationMessage}
-          <button type="submit">Submit</button>
-          <Link to="/issues">Back to issue list</Link>
-        </form>
-      </div>
+      <Card>
+        <CardHeader>Edit Issue</CardHeader>
+        <Form className="p-3" horizontal onSubmit={this.onSubmit}>
+          <FormGroup row>
+            <Label for="exampleEmail" sm={3}>
+              ID :
+            </Label>
+            <Col sm={9}>
+              <Label for="exampleEmail" sm={12}>
+                {issue._id}
+              </Label>
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label for="exampleEmail" sm={3}>
+              Created :
+            </Label>
+            <Col sm={9}>
+              <Label for="exampleEmail" sm={12}>
+                {issue.created ? issue.created.toDateString() : ""}
+              </Label>
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label for="exampleEmail" sm={3}>
+              Status :{" "}
+            </Label>
+            <Col sm={9}>
+              <Input
+                type="select"
+                name="status"
+                value={issue.status}
+                onChange={this.onChange}
+              >
+                <option value="">(Any)</option>
+                <option value="New">New</option>
+                <option value="Open">Open</option>
+                <option value="Assigned">Assigned</option>
+                <option value="Fixed">Fixed</option>
+                <option value="Verified">Verified</option>
+                <option value="Closed">Closed</option>
+              </Input>
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label for="exampleEmail" sm={3}>
+              Owner :
+            </Label>
+            <Col sm={9}>
+              <Input
+                type="text"
+                name="owner"
+                value={issue.owner}
+                onChange={this.onChange}
+              />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label for="exampleEmail" sm={3}>
+              Effort :
+            </Label>
+            <Col sm={9}>
+              <NumInput
+                size={5}
+                name="effort"
+                value={issue.effort}
+                onChange={this.onChange}
+              />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label for="exampleEmail" sm={3}>
+              Completion Date:
+            </Label>
+            <Col sm={9}>
+              <DateInput
+                name="completionDate"
+                value={issue.completionDate}
+                onChange={this.onChange}
+                onValidityChange={this.onValidityChange}
+                invalid={this.state.invalidFields.completionDate === true}
+              />
+              <FormFeedback />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label for="exampleEmail" sm={3}>
+              Title :
+            </Label>
+            <Col sm={9}>
+              <Input
+                name="title"
+                size={50}
+                value={issue.title}
+                onChange={this.onChange}
+              />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label for="exampleEmail" sm={3} />
+            <Col sm={9}>
+              <ButtonToolbar>
+                <Button className="mr-2" color="primary" type="submit">
+                  Submit
+                </Button>
+                <Button tag={Link} to="/issues">
+                  Back
+                </Button>
+              </ButtonToolbar>
+            </Col>
+          </FormGroup>
+        </Form>
+        {validationMessage}
+      </Card>
     );
   }
 }

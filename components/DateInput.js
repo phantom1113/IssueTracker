@@ -1,4 +1,5 @@
 import React from "react";
+import { Input } from "reactstrap";
 export default class DateInput extends React.Component {
   constructor(props) {
     super(props);
@@ -17,11 +18,9 @@ export default class DateInput extends React.Component {
     }
   }
   onFocus() {
-    console.log("onFocus");
     this.setState({ focused: true });
   }
   onBlur(e) {
-    console.log("onBlur");
     const value = this.unformat(this.state.value);
     const valid = this.state.value === "" || value != null;
     if (valid !== this.state.valid && this.props.onValidityChange) {
@@ -32,7 +31,6 @@ export default class DateInput extends React.Component {
     if (valid) this.props.onChange(e, value);
   }
   onChange(e) {
-    console.log("onChange");
     if (e.target.value.match(/^[\d-]*$/)) {
       this.setState({ value: e.target.value });
     }
@@ -54,12 +52,12 @@ export default class DateInput extends React.Component {
       this.state.focused || !this.state.valid
         ? this.state.value
         : this.displayFormat(this.props.value);
+    const childProps = Object.assign({}, this.props);
+    delete childProps.onValidityChange;
     return (
-      <input
+      <Input
         type="text"
-        size={20}
-        name={this.props.name}
-        className={className}
+        {...childProps}
         value={value}
         placeholder={this.state.focused ? "yyyy-mm-dd" : null}
         onFocus={this.onFocus}
