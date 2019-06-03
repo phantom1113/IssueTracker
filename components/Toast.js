@@ -2,13 +2,13 @@ import React from "react";
 import { Alert, Collapse } from "reactstrap";
 export default class Toast extends React.Component {
   componentDidUpdate() {
-    if (this.props.showing) {
-      clearTimeout(this.dismissTimer);
-      this.dismissTimer = setTimeout(this.props.onDismiss, 1000);
-    }
+    //    if (this.props.showing) {
+    //      clearTimeout(this.dismissTimer);
+    //     this.dismissTimer = setTimeout(this.props.onDismiss, 5000);
+    //    }
   }
   componentWillUnmount() {
-    clearTimeout(this.dismissTimer);
+    //   clearTimeout(this.dismissTimer);
   }
   render() {
     return (
@@ -26,7 +26,7 @@ export default class Toast extends React.Component {
           <Alert
             style={{ display: "inline-block", width: 500 }}
             color={this.props.bsStyle}
-            //toggle={this.props.onDismiss}
+            toggle={this.props.onDismiss}
           >
             {this.props.message}
           </Alert>

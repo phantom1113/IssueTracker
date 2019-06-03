@@ -1,7 +1,6 @@
 import React from "react";
 import axios from "axios";
 import { withRouter } from "react-router-dom";
-import { Link } from "react-router-dom";
 import {
   NavItem,
   NavLink,
@@ -34,10 +33,14 @@ class IssueAddNavItem extends React.Component {
     this.dismissToast = this.dismissToast.bind(this);
   }
   showModal() {
-    this.setState({ modal: true });
+    this.setState(prevState => ({
+      modal: !prevState.modal
+    }));
   }
   hideModal() {
-    this.setState({ modal: false });
+    this.setState(prevState => ({
+      modal: !prevState.modal
+    }));
   }
   showError(message) {
     this.setState({
@@ -47,7 +50,10 @@ class IssueAddNavItem extends React.Component {
     });
   }
   dismissToast() {
-    this.setState({ modal: false, toastVisible: false });
+    console.log("dismissToast");
+    console.log(this.state.modal);
+    this.hideModal();
+    this.setState({ toastVisible: false });
   }
   submit(e) {
     e.preventDefault();
@@ -77,6 +83,7 @@ class IssueAddNavItem extends React.Component {
       });
   }
   render() {
+    console.log("render");
     return (
       <NavItem onClick={this.showModal}>
         <NavLink>
