@@ -111,7 +111,7 @@ export default class IssueEdit extends React.Component {
         this.setState({ issue: updatedIssue });
         this.showSuccess("Updated issue successfully.");
       })
-      .catch(function(error) {
+      .catch(error => {
         // handle error
         this.showError(`Error in sending data to server`);
       });
@@ -130,7 +130,7 @@ export default class IssueEdit extends React.Component {
         issue.effort = issue.effort != null ? issue.effort.toString() : "";
         this.setState({ issue });
       })
-      .catch(function(error) {
+      .catch(error => {
         // handle error
         this.showError(`Error in sending data to server`);
         console.log(error.response.data.message);

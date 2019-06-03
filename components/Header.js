@@ -13,6 +13,7 @@ import {
   DropdownItem
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import IssueAddNavItem from "./IssueAddNavItem";
 
 export default class Header extends React.Component {
   constructor(props) {
@@ -48,9 +49,7 @@ export default class Header extends React.Component {
                   Report
                 </NavLink>
               </NavItem>
-              <NavItem>
-                <NavLink href="#">Create Issue</NavLink>
-              </NavItem>
+              <IssueAddNavItem />
               <UncontrolledDropdown nav inNavbar>
                 <DropdownToggle nav caret>
                   Options

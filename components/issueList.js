@@ -152,7 +152,6 @@ class IssueList extends React.Component {
         <hr />
         <IssueTable issues={this.state.issues} deleteIssue={this.deleteIssue} />
         <hr />
-        <IssueAdd createIssue={this.createIssue} />
         <Toast
           showing={this.state.toastVisible}
           message={this.state.toastMessage}

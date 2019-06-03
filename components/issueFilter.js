@@ -118,13 +118,13 @@ export default class IssueFilter extends React.Component {
             <Label>Effort between</Label>
             <InputGroup>
               <Input
-                size={5}
+                size="5"
                 value={this.state.effort_gte}
                 onChange={this.onChangeEffortGte}
               />
               <InputGroupAddon addonType="prepend">-</InputGroupAddon>
               <Input
-                size={5}
+                size="5"
                 value={this.state.effort_lte}
                 onChange={this.onChangeEffortLte}
               />
