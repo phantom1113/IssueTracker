@@ -12,7 +12,7 @@ class issueTable extends React.Component {
       />
     ));
     return (
-      <Table bordered condensed hover responsive>
+      <Table bordered hover responsive>
         <thead>
           <tr>
             <th>Id</th>

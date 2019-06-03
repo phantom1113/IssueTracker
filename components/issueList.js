@@ -5,19 +5,49 @@ import IssueTable from "./issueTable";
 import IssueFilter from "./issueFilter";
 import { Card, CardHeader, Collapse } from "reactstrap";
 import axios from "axios";
+import Toast from "./Toast";
 
 class IssueList extends React.Component {
   constructor() {
     super();
-    this.state = { issues: [], collapse: false, status: "Closed" };
+    this.state = {
+      issues: [],
+      collapse: false,
+      status: "Closed",
+      toastVisible: false,
+      toastMessage: "",
+      toastType: "success"
+    };
     this.createIssue = this.createIssue.bind(this);
     this.setFilter = this.setFilter.bind(this);
     this.initFilter = this.initFilter.bind(this);
     this.deleteIssue = this.deleteIssue.bind(this);
     this.toggle = this.toggle.bind(this);
+    this.showSuccess = this.showSuccess.bind(this);
+    this.showError = this.showError.bind(this);
+    this.dismissToast = this.dismissToast.bind(this);
   }
   toggle() {
     this.setState(state => ({ collapse: !state.collapse }));
+  }
+  showSuccess(message) {
+    console.log("show success");
+    this.setState({
+      toastVisible: true,
+      toastMessage: message,
+      toastType: "success"
+    });
+  }
+  showError(message) {
+    console.log("run show error");
+    this.setState({
+      toastVisible: true,
+      toastMessage: message,
+      toastType: "danger"
+    });
+  }
+  dismissToast() {
+    this.setState({ toastVisible: false });
   }
   componentDidMount() {
     this.props.history.push({
@@ -71,9 +101,9 @@ class IssueList extends React.Component {
         });
         this.setState({ issues: res.data.records });
       })
-      .catch(function(error) {
+      .catch(error => {
         // handle error
-        console.log(error.response);
+        this.showError(`Failed to fetch issues`);
       });
   }
   createIssue(newIssue) {
@@ -89,11 +119,11 @@ class IssueList extends React.Component {
         const newIssues = this.state.issues.concat(res.data);
         console.log(newIssues);
         this.setState({ issues: newIssues });
-        console.log(res);
+        this.showSuccess(`Added issue sucessfully.`);
       })
-      .catch(function(err) {
-        console.log(err.response.data.message);
-        alert(err.response.data.message);
+      .catch(err => {
+        ///console.log(err.response.data.message);
+        this.showError(`Failed to fetch issues`);
       });
   }
   deleteIssue(id) {
@@ -101,10 +131,10 @@ class IssueList extends React.Component {
       .delete("https://3ojz0xmpq.sse.codesandbox.io/api/issues/" + id)
       .then(res => {
         this.loadData();
-        console.log("Success");
+        this.showSuccess(`Deleted issue sucessfully.`);
       })
       .catch(err => {
-        console.log("Failed to delete issue");
+        this.showError(`Failed to fetch issues`);
       });
   }
   render() {
@@ -123,6 +153,12 @@ class IssueList extends React.Component {
         <IssueTable issues={this.state.issues} deleteIssue={this.deleteIssue} />
         <hr />
         <IssueAdd createIssue={this.createIssue} />
+        <Toast
+          showing={this.state.toastVisible}
+          message={this.state.toastMessage}
+          onDismiss={this.dismissToast}
+          bsStyle={this.state.toastType}
+        />
       </div>
     );
   }

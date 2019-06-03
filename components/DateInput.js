@@ -46,8 +46,6 @@ export default class DateInput extends React.Component {
     return isNaN(val.getTime()) ? null : val;
   }
   render() {
-    const className =
-      !this.state.valid && !this.state.focused ? "invalid" : null;
     const value =
       this.state.focused || !this.state.valid
         ? this.state.value

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import NumInput from "./NumInput";
 import DateInput from "./DateInput";
+import Toast from "./Toast";
 import {
   FormGroup,
   Input,
@@ -13,9 +14,9 @@ import {
   Form,
   Col,
   CardHeader,
-  FormFeedback
+  FormFeedback,
+  Alert
 } from "reactstrap";
-import { LinkContainer } from "react-router-bootstrap";
 
 export default class IssueEdit extends React.Component {
   constructor() {
@@ -30,11 +31,38 @@ export default class IssueEdit extends React.Component {
         completionDate: null,
         created: null
       },
-      invalidFields: {}
+      invalidFields: {},
+      visible: true,
+      toastVisible: false,
+      toastMessage: "",
+      toastType: "success"
     };
     this.onChange = this.onChange.bind(this);
     this.onValidityChange = this.onValidityChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.dismissValidation = this.dismissValidation.bind(this);
+    this.showValidation = this.showValidation.bind(this);
+    this.showSuccess = this.showSuccess.bind(this);
+    this.showError = this.showError.bind(this);
+    this.dismissToast = this.dismissToast.bind(this);
+  }
+  showSuccess(message) {
+    console.log("show success");
+    this.setState({
+      toastVisible: true,
+      toastMessage: message,
+      toastType: "success"
+    });
+  }
+  showError(message) {
+    this.setState({
+      toastVisible: true,
+      toastMessage: message,
+      toastType: "danger"
+    });
+  }
+  dismissToast() {
+    this.setState({ toastVisible: false });
   }
   componentDidMount() {
     this.loadData();
@@ -60,10 +88,10 @@ export default class IssueEdit extends React.Component {
     issue[event.target.name] = event.target.value;
     issue[event.target.name] = value;
     this.setState({ issue });
-    console.log(issue);
   }
   onSubmit(event) {
     event.preventDefault();
+    this.showValidation();
     if (Object.keys(this.state.invalidFields).length !== 0) {
       return;
     }
@@ -81,10 +109,11 @@ export default class IssueEdit extends React.Component {
           updatedIssue.completionDate = new Date(updatedIssue.completionDate);
         }
         this.setState({ issue: updatedIssue });
+        this.showSuccess("Updated issue successfully.");
       })
       .catch(function(error) {
         // handle error
-        console.log(error.response);
+        this.showError(`Error in sending data to server`);
       });
   }
   loadData() {
@@ -103,24 +132,38 @@ export default class IssueEdit extends React.Component {
       })
       .catch(function(error) {
         // handle error
-        console.log(error.response);
+        this.showError(`Error in sending data to server`);
+        console.log(error.response.data.message);
       });
   }
-
+  showValidation() {
+    this.setState({ visible: true });
+  }
+  dismissValidation() {
+    this.setState({ visible: false });
+  }
   // eslint-disable-line
   render() {
     const issue = this.state.issue;
-    const validationMessage =
-      Object.keys(this.state.invalidFields).length === 0 ? null : (
-        <div className="error">
+    let validationMessage = null;
+    if (
+      Object.keys(this.state.invalidFields).length !== 0 &&
+      this.state.visible
+    ) {
+      validationMessage = (
+        <Alert
+          color="danger"
+          isOpen={this.state.visible}
+          toggle={this.dismissValidation}
+        >
           Please correct invalid fields before submitting.
-        </div>
+        </Alert>
       );
-    console.log(this.state.invalidFields);
+    }
     return (
       <Card>
         <CardHeader>Edit Issue</CardHeader>
-        <Form className="p-3" horizontal onSubmit={this.onSubmit}>
+        <Form className="p-3" onSubmit={this.onSubmit}>
           <FormGroup row>
             <Label for="exampleEmail" sm={3}>
               ID :
@@ -181,7 +224,7 @@ export default class IssueEdit extends React.Component {
             </Label>
             <Col sm={9}>
               <NumInput
-                size={5}
+                size="5"
                 name="effort"
                 value={issue.effort}
                 onChange={this.onChange}
@@ -210,7 +253,7 @@ export default class IssueEdit extends React.Component {
             <Col sm={9}>
               <Input
                 name="title"
-                size={50}
+                size="50"
                 value={issue.title}
                 onChange={this.onChange}
               />
@@ -229,8 +272,16 @@ export default class IssueEdit extends React.Component {
               </ButtonToolbar>
             </Col>
           </FormGroup>
+          <FormGroup row>
+            <Col sm={{ size: 9, offset: 3 }}>{validationMessage}</Col>
+          </FormGroup>
         </Form>
-        {validationMessage}
+        <Toast
+          showing={this.state.toastVisible}
+          message={this.state.toastMessage}
+          onDismiss={this.dismissToast}
+          bsStyle={this.state.toastType}
+        />
       </Card>
     );
   }
